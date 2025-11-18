@@ -1,0 +1,134 @@
+using FluentValidation;
+using System;
+using System.Text.RegularExpressions;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
+
+namespace Platform.Api.Common.Validation
+{
+    public static class CommonValidationRules
+    {
+        /// <summary>
+        /// Validates that a property has the correct Column attribute for database mapping
+        /// </summary>
+        public static IRuleBuilderOptions<T, string> ValidColumnMapping<T>(this IRuleBuilder<T, string> ruleBuilder, string expectedColumnName)
+        {
+            return ruleBuilder
+                .Must((obj, propertyName) =>
+                {
+                    var property = typeof(T).GetProperty(propertyName);
+                    if (property == null) return false;
+                    
+                    var columnAttribute = property.GetCustomAttribute<ColumnAttribute>();
+                    return columnAttribute?.Name == expectedColumnName;
+                })
+                .WithMessage($"Property must have [Column(\"{expectedColumnName}\")] attribute for proper database mapping");
+        }
+
+        /// <summary>
+        /// Validates that a property follows snake_case to PascalCase mapping convention
+        /// </summary>
+        public static IRuleBuilderOptions<T, string> ValidSnakeCaseMapping<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            return ruleBuilder
+                .Must((obj, propertyName) =>
+                {
+                    var property = typeof(T).GetProperty(propertyName);
+                    if (property == null) return false;
+                    
+                    var columnAttribute = property.GetCustomAttribute<ColumnAttribute>();
+                    if (columnAttribute == null) return false;
+                    
+                    // Check if the column name follows snake_case pattern
+                    var columnName = columnAttribute.Name;
+                    var expectedPropertyName = columnName.Replace("_", "").ToPascalCase();
+                    
+                    return property.Name == expectedPropertyName;
+                })
+                .WithMessage("Property name must follow snake_case to PascalCase mapping convention");
+        }
+
+        public static IRuleBuilderOptions<T, string> ValidEmail<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            return ruleBuilder
+                .NotEmpty().WithMessage("Email is required")
+                .EmailAddress().WithMessage("Invalid email format");
+        }
+
+        public static IRuleBuilderOptions<T, string> ValidPhoneNumber<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            return ruleBuilder
+                .NotEmpty().WithMessage("Phone number is required")
+                .Matches(@"^\+?[1-9]\d{1,14}$").WithMessage("Invalid phone number format");
+        }
+
+        public static IRuleBuilderOptions<T, string> ValidUrl<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            return ruleBuilder
+                .NotEmpty().WithMessage("URL is required")
+                .Must(url => Uri.TryCreate(url, UriKind.Absolute, out _))
+                .WithMessage("Invalid URL format");
+        }
+
+        public static IRuleBuilderOptions<T, string> ValidDate<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            return ruleBuilder
+                .NotEmpty().WithMessage("Date is required")
+                .Must(date => DateTime.TryParse(date, out _))
+                .WithMessage("Invalid date format");
+        }
+
+        public static IRuleBuilderOptions<T, string> ValidEnum<T, TEnum>(this IRuleBuilder<T, string> ruleBuilder)
+            where TEnum : struct, Enum
+        {
+            return ruleBuilder
+                .NotEmpty().WithMessage("Value is required")
+                .Must(value => Enum.TryParse<TEnum>(value, true, out _))
+                .WithMessage($"Invalid value. Must be one of: {string.Join(", ", Enum.GetNames<TEnum>())}");
+        }
+
+        public static IRuleBuilderOptions<T, string> ValidGuid<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            return ruleBuilder
+                .NotEmpty().WithMessage("GUID is required")
+                .Must(guid => Guid.TryParse(guid, out _))
+                .WithMessage("Invalid GUID format");
+        }
+
+        public static IRuleBuilderOptions<T, string> ValidJson<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            return ruleBuilder
+                .NotEmpty().WithMessage("JSON is required")
+                .Must(json => 
+                {
+                    try
+                    {
+                        System.Text.Json.JsonDocument.Parse(json);
+                        return true;
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                })
+                .WithMessage("Invalid JSON format");
+        }
+
+        public static IRuleBuilderOptions<T, string> ValidRegex<T>(this IRuleBuilder<T, string> ruleBuilder, string pattern, string message)
+        {
+            return ruleBuilder
+                .NotEmpty().WithMessage("Value is required")
+                .Matches(pattern).WithMessage(message);
+        }
+
+        public static IRuleBuilderOptions<T, TProperty> RequiredIf<T, TProperty>(
+            this IRuleBuilder<T, TProperty> ruleBuilder,
+            Func<T, bool> predicate,
+            string message = "Field is required when condition is met")
+        {
+            return ruleBuilder
+                .Must((obj, value) => !predicate(obj) || value != null)
+                .WithMessage(message);
+        }
+    }
+} 

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20251118000000-delete-all-data" author="system">
+        <comment>Delete all existing data from tables to create a clean starter application</comment>
+        
+        <!-- Delete data in order respecting foreign key constraints -->
+        <delete tableName="messages"/>
+        <delete tableName="chats"/>
+        <delete tableName="topic_tags"/>
+        <delete tableName="persona_categories"/>
+        <delete tableName="topics"/>
+        <delete tableName="personas"/>
+        <delete tableName="tags"/>
+        <delete tableName="categories"/>
+        <delete tableName="users"/>
+        
+        <rollback>
+            <!-- Data deletion cannot be rolled back -->
+            <comment>Data deletion cannot be rolled back</comment>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20251118000001-drop-fk-topic-tags" author="system">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="topic_tags"/>
+        </preConditions>
+        <comment>Drop foreign keys from topic_tags table</comment>
+        <sql>
+            ALTER TABLE topic_tags DROP CONSTRAINT IF EXISTS fk_topic_tags_topic_id;
+            ALTER TABLE topic_tags DROP CONSTRAINT IF EXISTS fk_topic_tags_tag_id;
+        </sql>
+    </changeSet>
+
+    <changeSet id="20251118000002-drop-fk-persona-categories" author="system">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="persona_categories"/>
+        </preConditions>
+        <comment>Drop foreign keys from persona_categories table</comment>
+        <sql>
+            ALTER TABLE persona_categories DROP CONSTRAINT IF EXISTS fk_persona_categories_persona;
+            ALTER TABLE persona_categories DROP CONSTRAINT IF EXISTS fk_persona_categories_category;
+        </sql>
+    </changeSet>
+
+    <changeSet id="20251118000003-drop-fk-topics" author="system">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="topics"/>
+        </preConditions>
+        <comment>Drop foreign keys from topics table</comment>
+        <sql>
+            ALTER TABLE topics DROP CONSTRAINT IF EXISTS fk_topics_category;
+            ALTER TABLE topics DROP CONSTRAINT IF EXISTS fk_topics_persona;
+        </sql>
+    </changeSet>
+
+    <changeSet id="20251118000004-drop-fk-chats-topic" author="system">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="chats"/>
+        </preConditions>
+        <comment>Drop foreign key from chats to topics</comment>
+        <sql>
+            ALTER TABLE chats DROP CONSTRAINT IF EXISTS fk_chats_topic;
+        </sql>
+    </changeSet>
+
+    <changeSet id="20251118000005-drop-indexes" author="system">
+        <comment>Drop indexes before dropping columns and tables</comment>
+        <sql>
+            DROP INDEX IF EXISTS idx_chats_topic_id;
+            DROP INDEX IF EXISTS idx_topics_persona_id;
+            DROP INDEX IF EXISTS idx_topics_category_id;
+            DROP INDEX IF EXISTS idx_topics_created_by;
+            DROP INDEX IF EXISTS idx_topic_tags_topic_id;
+            DROP INDEX IF EXISTS idx_topic_tags_tag_id;
+            DROP INDEX IF EXISTS idx_persona_categories_persona_id;
+            DROP INDEX IF EXISTS idx_persona_categories_category_id;
+        </sql>
+    </changeSet>
+
+    <changeSet id="20251118000006-drop-chat-topic-column" author="system">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="chats" columnName="topic_id"/>
+        </preConditions>
+        <comment>Drop topic_id column from chats table</comment>
+        
+        <dropColumn tableName="chats" columnName="topic_id"/>
+        
+        <rollback>
+            <addColumn tableName="chats">
+                <column name="topic_id" type="UUID">
+                    <constraints nullable="true"/>
+                </column>
+            </addColumn>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20251118000007-drop-tables" author="system">
+        <comment>Drop tables that are no longer needed</comment>
+        <sql>
+            DROP TABLE IF EXISTS topic_tags CASCADE;
+            DROP TABLE IF EXISTS persona_categories CASCADE;
+            DROP TABLE IF EXISTS topics CASCADE;
+            DROP TABLE IF EXISTS tags CASCADE;
+            DROP TABLE IF EXISTS categories CASCADE;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
+
