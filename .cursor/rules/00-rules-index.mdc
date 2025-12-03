@@ -12,7 +12,7 @@ alwaysApply: true
 Before proceeding with any request, validate:
 
 - [ ] **Rule Discovery**: Have I found all relevant `.cursor/rules/` files?
-- [ ] **Template Discovery**: Have I found all relevant `.cursor/templates/` files?
+- [ ] **Template Discovery**: Have I found all relevant `docs/templates/` files?
 - [ ] **Workflow Selection**: Do I know which workflow to follow?
 - [ ] **Interactive Process**: Am I following the required prompting process?
 
@@ -22,19 +22,20 @@ Before proceeding with any request, validate:
 - **Location**: `.cursor/rules/`
 - **[Architecture Principles](mdc:.cursor/rules/cursor_rules.mdc)** - Clean Architecture boundaries, overall structure
 - **[This Index](mdc:.cursor/rules/00-rules-index.mdc)** - Rule discovery guide
+- **Class Type Rules**: `.cursor/rules/classtypes/` - Auto-loaded best practices for specific file types
 
 ### 2. 🔧 API Layer Rules (Backend Development)
 - **Location**: `apps/api/.cursor/`
 - **[Core Principles](mdc:apps/api/.cursor/rules/principles.mdc)** - Validation, exceptions, facades, domain patterns
 - **[Endpoint Workflow](mdc:apps/api/.cursor/rules/endpoint-workflow.mdc)** - 8-phase interactive feature creation process
 - **[Security & Performance](mdc:apps/api/.cursor/rules/security-performance.mdc)** - Security standards and performance requirements
-- **Templates**: `apps/api/.cursor/templates/create/` - Code generation templates for all backend components
+- **Templates**: `docs/templates/create/` - Code generation templates for all backend components
 
 ### 3. 🗄️ Database Layer Rules (Schema & Migrations)
 - **Location**: `apps/api/Platform.Database/.cursor/`
 - **[Database Workflow](mdc:apps/api/Platform.Database/.cursor/rules/database-workflow.mdc)** - Table creation and migration process
 - **[Liquibase Best Practices](mdc:apps/api/Platform.Database/.cursor/rules/liquibase-best-practices.mdc)** - Migration standards and naming
-- **Templates**: `apps/api/Platform.Database/.cursor/templates/create/` - Schema and migration templates
+- **Templates**: `docs/templates/` - Schema and migration templates
 
 ### 4. 🧪 Testing Layer Rules (Acceptance Tests)
 - **Location**: `apps/api/Platform.AcceptanceTests/.cursor/`
@@ -49,9 +50,9 @@ Before proceeding with any request, validate:
 
 | User Request | Primary Workflow | Required Templates | Key Rules |
 |--------------|------------------|-------------------|-----------|
-| **"New feature"**, **"Create API"**, **"Build [entity]"** | [Endpoint Workflow](mdc:apps/api/.cursor/rules/endpoint-workflow.mdc) | `apps/api/.cursor/templates/create/` | [API Principles](mdc:apps/api/.cursor/rules/principles.mdc) |
-| **"Database"**, **"Table"**, **"Migration"** | [Database Workflow](mdc:apps/api/Platform.Database/.cursor/rules/database-workflow.mdc) | `apps/api/Platform.Database/.cursor/templates/create/` | [Liquibase Practices](mdc:apps/api/Platform.Database/.cursor/rules/liquibase-best-practices.mdc) |
-| **"Test"**, **"Testing"** | [Testing Standards](mdc:apps/api/Platform.AcceptanceTests/.cursor/rules/testing-standards.mdc) | `apps/api/.cursor/templates/create/Test.hbs` | **ONLY test DomainFacade** |
+| **"New feature"**, **"Create API"**, **"Build [entity]"** | [Endpoint Workflow](mdc:apps/api/.cursor/rules/endpoint-workflow.mdc) | `docs/templates/create/` | [API Principles](mdc:apps/api/.cursor/rules/principles.mdc) |
+| **"Database"**, **"Table"**, **"Migration"** | [Database Workflow](mdc:apps/api/Platform.Database/.cursor/rules/database-workflow.mdc) | `docs/templates/` | [Liquibase Practices](mdc:apps/api/Platform.Database/.cursor/rules/liquibase-best-practices.mdc) |
+| **"Test"**, **"Testing"** | [Testing Standards](mdc:apps/api/Platform.AcceptanceTests/.cursor/rules/testing-standards.mdc) | `docs/templates/create/DomainFacadeTests.Base.hbs` | **ONLY test DomainFacade** |
 | **"Frontend"**, **"UI"**, **"Component"** | Root architecture | TBD | Clean Architecture boundaries |
 
 ## 🚨 CRITICAL TRIGGER PHRASES
@@ -109,7 +110,7 @@ User: "I want to create a Customer management feature"
 AI: "I see you want to create a Customer feature. Let me validate my approach:
 1. ✅ Found .cursor folders at: root, apps/api, apps/api/Platform.Database
 2. ✅ This is API feature work, so I need: apps/api/.cursor/rules/endpoint-workflow.mdc
-3. ✅ I should use templates from: apps/api/.cursor/templates/create/
+3. ✅ I should use templates from: docs/templates/create/
 4. ✅ I need to follow the 8-phase interactive process
 5. ✅ I should start with Phase 1: Intelligent Feature Scoping
 

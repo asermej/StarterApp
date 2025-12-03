@@ -10,8 +10,8 @@ applies_to: ["Platform.Api", "Platform.Domain", "Platform.AcceptanceTests"]
 alwaysApply: false
 priority: 900
 triggers: ["new feature", "create feature", "build feature", "new endpoint", "create API", "add endpoint", "CRUD", "REST API"]
-related_files: ["principles.mdc", "../Platform.Database/.cursor/rules/database-workflow.mdc", "../Platform.AcceptanceTests/.cursor/rules/testing-standards.mdc"]
-template_directory: "../templates/create/"
+related_files: ["principles.mdc", "../Platform.Database/.cursor/rules/database-workflow.mdc", "../Platform.AcceptanceTests/.cursor/rules/testing-standards.mdc", "../../.cursor/rules/classtypes/"]
+template_directory: "docs/templates/create/"
 ---
 
 # 🚀 Interactive API Endpoint Development Workflow
@@ -73,6 +73,16 @@ You can copy the block above and edit it directly in your response if you need a
 "And finally, which of the properties will be **Searchable Fields**? (e.g., 'Username, Email')"
 **(Wait for user response)**
 
+**(Prompt 7: Authentication)**
+"What **Authentication** requirements does this feature have?
+*   `Public` - No authentication required
+*   `Authenticated` - Requires login (default)
+*   `Roles: Admin,Manager` - Specific role(s) required
+*   `Policy: CanManageFeatures` - Custom policy required
+
+(e.g., 'Authenticated' or 'Roles: Admin')"
+**(Wait for user response)**
+
 **(Action: Summarize and Confirm)**
 "Thank you. I have all the details. Here is the plan based on your input:
 *   **Feature**: `{{featureName}}`
@@ -80,6 +90,7 @@ You can copy the block above and edit it directly in your response if you need a
 *   **Table**: `{{tableName}}`
 *   **Properties**: `{{properties}}`
 *   **Searchable Fields**: `{{searchableFields}}`
+*   **Authentication**: `{{authentication}}`
 
 Shall I proceed to Phase 2: Database Layer?"
 
@@ -137,7 +148,8 @@ See [Join Table Encapsulation](mdc:principles.mdc#join-table-encapsulation) for 
 *   **File**: `{{featureName}}.cs`
 *   **Location**: `Platform.Domain/Managers/Models/`
 *   **Purpose**: Defines the core C# entity for `{{featureName}}`.
-*   **Template**: `.cursor/templates/api/create/DomainModel.hbs`
+*   **Template**: `docs/templates/create/DomainModel.hbs`
+*   **Best Practices**: See [DomainModel.mdc](mdc:.cursor/rules/classtypes/DomainModel.mdc)
 
 **Action**: After generating the file, I will verify its entire content against the template's expected output and report the result to you before proceeding.
 
@@ -153,9 +165,10 @@ Proceed?"
 *   **Location**: `Platform.Domain/Managers/Exceptions/`
 *   **Purpose**: Defines the custom exceptions for the `{{featureName}}` feature.
 *   **Templates**: 
-    *   `.cursor/templates/api/create/ValidationException.hbs`
-    *   `.cursor/templates/api/create/NotFoundException.hbs`
-    *   `.cursor/templates/api/create/DuplicateException.hbs`
+    *   `docs/templates/create/ValidationException.hbs`
+    *   `docs/templates/create/NotFoundException.hbs`
+    *   `docs/templates/create/DuplicateException.hbs`
+*   **Best Practices**: See [Exception.mdc](mdc:.cursor/rules/classtypes/Exception.mdc)
 
 **Action**: After generating the files, I will verify their entire content against the templates' expected output and report the results to you before proceeding.
 
@@ -167,7 +180,8 @@ Proceed?"
 *   **File**: `{{featureName}}DataManager.cs`
 *   **Location**: `Platform.Domain/Managers/DataLayer/DataManagers/`
 *   **Purpose**: Handles all SQL queries for the `{{featureName}}` entity.
-*   **Template**: `.cursor/templates/api/create/DataManager.hbs`
+*   **Template**: `docs/templates/create/DataManager.hbs`
+*   **Best Practices**: See [DataManager.mdc](mdc:.cursor/rules/classtypes/DataManager.mdc)
 
 **Action**: After generating the file, I will verify its entire content against the template's expected output and report the result to you before proceeding.
 
@@ -178,7 +192,8 @@ Proceed?"
 "Now, I'll create and verify the **Data Facade Extensions**. I will generate the code based on the following details:
 *   **Files**: `DataFacade.{{featureName}}.cs`.
 *   **Purpose**: These `partial` classes will expose the new data and domain logic.
-*   **Templates**: `.cursor/templates/api/create/DataFacade.hbs`
+*   **Templates**: `docs/templates/create/DataFacade.hbs`
+*   **Best Practices**: See [DataFacade.mdc](mdc:.cursor/rules/classtypes/DataFacade.mdc)
 
 **Action**: After generating the files, I will verify their entire content against the templates' expected output and report the results to you before proceeding.
 
@@ -190,7 +205,8 @@ Proceed?"
 *   **File**: `{{featureName}}Validator.cs`
 *   **Location**: `Platform.Domain/Managers/Validators/`
 *   **Purpose**: Defines the validation logic for the `{{featureName}}` entity.
-*   **Template**: `.cursor/templates/api/create/Validator.hbs`
+*   **Template**: `docs/templates/create/Validator.hbs`
+*   **Best Practices**: See [Validator.mdc](mdc:.cursor/rules/classtypes/Validator.mdc)
 
 **Action**: After generating the file, I will verify its entire content against the template's expected output and report the result to you before proceeding.
 
@@ -202,7 +218,8 @@ Proceed?"
 *   **File**: `{{featureName}}Manager.cs`
 *   **Location**: `Platform.Domain/Managers/`
 *   **Purpose**: Orchestrates validation and calls the DataFacade.
-*   **Template**: `.cursor/templates/api/create/Manager.hbs`
+*   **Template**: `docs/templates/create/Manager.hbs`
+*   **Best Practices**: See [Manager.mdc](mdc:.cursor/rules/classtypes/Manager.mdc)
 
 **Action**: After generating the file, I will verify its entire content against the template's expected output and report the result to you before proceeding.
 
@@ -214,6 +231,7 @@ Proceed?"
 *   **File**: `DomainFacade.cs`
 *   **Location**: `Platform.Domain/`
 *   **Purpose**: To register the new manager with the main `DomainFacade`.
+*   **Best Practices**: See [DomainFacade.mdc](mdc:.cursor/rules/classtypes/DomainFacade.mdc)
 *   **Action**: I will directly edit the file to insert the new manager's private field, property, and `Dispose()` call.
 
 Proceed?"
@@ -223,7 +241,7 @@ Proceed?"
 "Now, I'll create and verify the **Domain Facade Extension**. I will generate the code based on the following details:
 *   **Files**: `DomainFacade.{{featureName}}.cs`.
 *   **Purpose**: These `partial` classes will expose the new data and domain logic.
-*   **Templates**: `.cursor/templates/api/create/DomainFacade.Base.hbs`
+*   **Templates**: `docs/templates/create/DomainFacade.Base.hbs`
 
 Proceed?"
 
@@ -243,7 +261,8 @@ Proceed?"
 *   **File**: `DomainFacadeTests.{{featureName}}.cs`
 *   **Location**: `Platform.AcceptanceTests/Domain/`
 *   **Purpose**: To test the entire {{featureName}} feature through the `DomainFacade` ONLY against a real test database, ensuring all operations work as expected.
-*   **Template**: `.cursor/templates/api/create/DomainFacadeTests.Base.hbs`
+*   **Template**: `docs/templates/create/DomainFacadeTests.Base.hbs`
+*   **Best Practices**: See [DomainFacadeTests.mdc](mdc:.cursor/rules/classtypes/DomainFacadeTests.mdc)
 *   **IMPORTANT**: The test will ONLY call `DomainFacade` methods - no direct testing of managers, data managers, or validators.
 
 Ready to generate the test file?"
@@ -270,7 +289,8 @@ Proceed with running the tests?"
 *   **File**: `{{featureName}}Resource.cs`
 *   **Location**: `Platform.Api/ResourcesModels/`
 *   **Purpose**: The DTO that defines the JSON shape for API requests/responses.
-*   **Template**: `.cursor/templates/api/create/ResourceModel.hbs`
+*   **Template**: `docs/templates/create/ResourceModel.hbs`
+*   **Best Practices**: See [ResourceModel.mdc](mdc:.cursor/rules/classtypes/ResourceModel.mdc)
 
 Proceed?"
 
@@ -280,7 +300,8 @@ Proceed?"
 *   **File**: `{{featureName}}Mapper.cs`
 *   **Location**: `Platform.Api/Mappers/`
 *   **Purpose**: Maps data between the Domain Model and the Resource Model.
-*   **Template**: `.cursor/templates/api/create/Mapper.hbs`
+*   **Template**: `docs/templates/create/Mapper.hbs`
+*   **Best Practices**: See [Mapper.mdc](mdc:.cursor/rules/classtypes/Mapper.mdc)
 
 Proceed?"
 
@@ -290,7 +311,15 @@ Proceed?"
 *   **File**: `{{featureName}}Controller.cs`
 *   **Location**: `Platform.Api/Controllers/`
 *   **Purpose**: The public HTTP entry point for the `{{featureName}}` feature.
-*   **Template**: `.cursor/templates/api/create/Controller.hbs`
+*   **Template**: `docs/templates/create/Controller.hbs`
+*   **Best Practices**: See [Controller.mdc](mdc:.cursor/rules/classtypes/Controller.mdc)
+*   **Authentication**: `{{authentication}}` (from Phase 1)
+
+**Authentication will be applied as:**
+*   `Public` → No `[Authorize]` attribute, use `[AllowAnonymous]` if other controllers require auth
+*   `Authenticated` → `[Authorize]` at controller level
+*   `Roles: X,Y` → `[Authorize(Roles = "X,Y")]` at controller level
+*   `Policy: X` → `[Authorize(Policy = "X")]` at controller level
 
 Proceed?"
 
