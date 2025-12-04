@@ -12,7 +12,7 @@ alwaysApply: true
 Before proceeding with any request, validate:
 
 - [ ] **Rule Discovery**: Have I found all relevant `.cursor/rules/` files?
-- [ ] **Template Discovery**: Have I found all relevant `docs/templates/` files?
+- [ ] **Template Discovery**: Have I found all relevant `docs/technical/templates/` files?
 - [ ] **Workflow Selection**: Do I know which workflow to follow?
 - [ ] **Interactive Process**: Am I following the required prompting process?
 
@@ -22,24 +22,27 @@ Before proceeding with any request, validate:
 - **Location**: `.cursor/rules/`
 - **[Architecture Principles](mdc:.cursor/rules/cursor_rules.mdc)** - Clean Architecture boundaries, overall structure
 - **[This Index](mdc:.cursor/rules/00-rules-index.mdc)** - Rule discovery guide
-- **Class Type Rules**: `.cursor/rules/classtypes/` - Auto-loaded best practices for specific file types
+- **Class Type Rules**: `.cursor/rules/class-rules/` - Auto-loaded best practices for specific file types
+  - `domain-class-rules/` - Domain layer classes (Manager, DataFacade, DomainFacade, etc.)
+  - `api-class-rules/` - API layer classes (Controller, Mapper, ResourceModel)
+  - `acceptance-tests-class-rules/` - Test classes (DomainFacadeTests)
 
 ### 2. 🔧 API Layer Rules (Backend Development)
 - **Location**: `apps/api/.cursor/`
-- **[Core Principles](docs/technical/core/principles.md)** - Validation, exceptions, facades, domain patterns
-- **[Endpoint Workflow](.cursor/commands/new-endpoint.md)** - 8-phase interactive feature creation process (use `/new-endpoint` command)
-- **[Security & Performance](docs/technical/core/security-performance.md)** - Security standards and performance requirements
-- **Templates**: `docs/templates/create/` - Code generation templates for all backend components
+- **[Core Principles](docs/technical/reference/core/principles.md)** - Validation, exceptions, facades, domain patterns
+- **[Endpoint Workflow](.cursor/commands/new-endpoint.mdc)** - 8-phase interactive feature creation process (use `/new-endpoint` command)
+- **[Security & Performance](docs/technical/reference/core/security-performance.md)** - Security standards and performance requirements
+- **Templates**: `docs/technical/templates/domain-templates/`, `docs/technical/templates/api-templates/` - Code generation templates for backend components
 
 ### 3. 🗄️ Database Layer Rules (Schema & Migrations)
-- **Location**: `apps/api/Platform.Database/.cursor/`
-- **[Database Workflow](mdc:apps/api/Platform.Database/.cursor/rules/database-workflow.mdc)** - Table creation and migration process
-- **[Liquibase Best Practices](mdc:apps/api/Platform.Database/.cursor/rules/liquibase-best-practices.mdc)** - Migration standards and naming
-- **Templates**: `docs/templates/` - Schema and migration templates
+- **Location**: `.cursor/rules/database-rules/` (glob-targeted to `apps/api/Platform.Database/**/*`)
+- **[Database Workflow](mdc:.cursor/rules/database-rules/database-workflow.mdc)** - Table creation and migration process
+- **[Liquibase Best Practices](mdc:.cursor/rules/database-rules/liquibase-best-practices.mdc)** - Migration standards and naming
+- **Templates**: `docs/technical/templates/database-templates/` - Liquibase migration templates
 
 ### 4. 🧪 Testing Layer Rules (Acceptance Tests)
-- **Location**: `apps/api/Platform.AcceptanceTests/.cursor/`
-- **[Testing Standards](mdc:apps/api/Platform.AcceptanceTests/.cursor/rules/testing-standards.mdc)** - Custom test doubles, DomainFacade-only testing
+- **Location**: `.cursor/rules/acceptance-test-rules/` (glob-targeted to `apps/api/Platform.AcceptanceTests/**/*`)
+- **[Testing Standards](mdc:.cursor/rules/acceptance-test-rules/testing-standards.mdc)** - Custom test doubles, DomainFacade-only testing
 - **CRITICAL**: Only test through DomainFacade interface
 
 ### 5. 🌐 Web Layer Rules (Frontend Development)
@@ -50,27 +53,27 @@ Before proceeding with any request, validate:
 
 | User Request | Primary Workflow | Required Templates | Key Rules |
 |--------------|------------------|-------------------|-----------|
-| **"New feature"**, **"Create API"**, **"Build [entity]"** | [Endpoint Workflow](.cursor/commands/new-endpoint.md) (or use `/new-endpoint`) | `docs/templates/create/` | [API Principles](docs/technical/core/principles.md) |
-| **"Database"**, **"Table"**, **"Migration"** | [Database Workflow](mdc:apps/api/Platform.Database/.cursor/rules/database-workflow.mdc) | `docs/templates/` | [Liquibase Practices](mdc:apps/api/Platform.Database/.cursor/rules/liquibase-best-practices.mdc) |
-| **"Test"**, **"Testing"** | [Testing Standards](mdc:apps/api/Platform.AcceptanceTests/.cursor/rules/testing-standards.mdc) | `docs/templates/create/DomainFacadeTests.Base.hbs` | **ONLY test DomainFacade** |
+| **"New feature"**, **"Create API"**, **"Build [entity]"** | [Endpoint Workflow](.cursor/commands/new-endpoint.mdc) (or use `/new-endpoint`) | `docs/technical/templates/domain-templates/`, `docs/technical/templates/api-templates/` | [API Principles](docs/technical/reference/core/principles.md) |
+| **"Database"**, **"Table"**, **"Migration"** | [Database Workflow](mdc:.cursor/rules/database-rules/database-workflow.mdc) | `docs/technical/templates/database-templates/` | [Liquibase Practices](mdc:.cursor/rules/database-rules/liquibase-best-practices.mdc) |
+| **"Test"**, **"Testing"** | [Testing Standards](mdc:.cursor/rules/acceptance-test-rules/testing-standards.mdc) | `docs/technical/templates/acceptance-test-templates/DomainFacadeTests.Base.hbs` | **ONLY test DomainFacade** |
 | **"Frontend"**, **"UI"**, **"Component"** | Root architecture | TBD | Clean Architecture boundaries |
 
 ## 🚨 CRITICAL TRIGGER PHRASES
 
 When user mentions ANY of these, follow the specified workflow:
 
-### API Development Triggers → Use `/new-endpoint` command or [Endpoint Workflow](.cursor/commands/new-endpoint.md)
+### API Development Triggers → Use `/new-endpoint` command or [Endpoint Workflow](.cursor/commands/new-endpoint.mdc)
 - "new feature", "create feature", "build feature"
 - "new endpoint", "create API", "add endpoint"
 - "Customer management", "User profile", "Order system" (any entity)
 - "CRUD operations", "REST API"
 
-### Database Triggers → Use [Database Workflow](mdc:apps/api/Platform.Database/.cursor/rules/database-workflow.mdc)
+### Database Triggers → Use [Database Workflow](mdc:.cursor/rules/database-rules/database-workflow.mdc)
 - "database", "table", "schema"
 - "migration", "liquibase"
 - "create table", "alter table"
 
-### Testing Triggers → Use [Testing Standards](mdc:apps/api/Platform.AcceptanceTests/.cursor/rules/testing-standards.mdc)
+### Testing Triggers → Use [Testing Standards](mdc:.cursor/rules/acceptance-test-rules/testing-standards.mdc)
 - "test", "testing", "acceptance test"
 - **CRITICAL**: Only test through DomainFacade interface
 - Never test managers, data managers, or validators directly
@@ -108,9 +111,9 @@ Before starting work, ask yourself:
 User: "I want to create a Customer management feature"
 
 AI: "I see you want to create a Customer feature. Let me validate my approach:
-1. ✅ Found .cursor folders at: root, apps/api, apps/api/Platform.Database
+1. ✅ Found .cursor folders at: root, apps/api
 2. ✅ This is API feature work, so I should use: /new-endpoint command
-3. ✅ I should use templates from: docs/templates/create/
+3. ✅ I should use templates from: docs/technical/templates/domain-templates/ and docs/technical/templates/api-templates/
 4. ✅ I need to follow the 8-phase interactive process
 5. ✅ I should start with Phase 1: Intelligent Feature Scoping
 
