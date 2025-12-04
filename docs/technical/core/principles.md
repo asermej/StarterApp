@@ -1,19 +1,4 @@
----
-description: 
-globs: 
-alwaysApply: false
----
----
-description: Foundational principles for all backend services - architectural boundaries, validation, error handling
-keywords: ["clean architecture", "validation", "exceptions", "facades", "domain layer", "data access"]
-applies_to: ["Platform.Api", "Platform.Domain", "Platform.AcceptanceTests"]
-alwaysApply: true
-priority: 800
-triggers: ["validation", "exception", "facade", "manager", "domain", "data access"]
-related_files: ["endpoint-workflow.mdc", "../Platform.Database/.cursor/rules/database-workflow.mdc", "../Platform.AcceptanceTests/.cursor/rules/testing-standards.mdc"]
----
-
-# 🏗️ Backend Architecture Principles
+# Backend Architecture Principles
 
 **CRITICAL**: This document contains the foundational principles that govern the architecture and implementation of all backend services. It is the single source of truth for architectural boundaries, data handling, validation, and error management. All other rule files will reference these principles.
 
@@ -35,7 +20,7 @@ The platform adheres to Clean Architecture. The dependencies flow in one directi
 - **`DataFacade`**: The single entry point for data access operations. It is internal to the `Domain` and used by managers.
 - **Managers** (e.g., `PersonaManager`): Contain the core business logic for a specific domain entity. They use the `DataFacade` to retrieve and persist data and are invoked by the `DomainFacade`.
 
-### **🚨 CRITICAL: Join Table Encapsulation**
+### **CRITICAL: Join Table Encapsulation**
 
 **Join tables must NOT be exposed in DomainFacade.** They are implementation details that should be hidden from external consumers.
 

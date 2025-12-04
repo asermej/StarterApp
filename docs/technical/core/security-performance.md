@@ -1,9 +1,4 @@
----
-description:
-globs:
-alwaysApply: false
----
-# 🔒 Security & Performance Standards
+# Security & Performance Standards
 
 **CRITICAL**: Security and performance are not optional - they are architectural requirements.
 
@@ -357,7 +352,7 @@ services.AddCors(options =>
 
 ## Security Anti-Patterns
 
-### ❌ **Never Do These**
+### **Never Do These**
 
 #### **SQL Injection Vulnerabilities**
 ```csharp
@@ -392,7 +387,7 @@ public async Task<ActionResult> GetSensitiveData()
 
 ## Performance Anti-Patterns
 
-### ❌ **Never Do These**
+### **Never Do These**
 
 #### **N+1 Query Problem**
 ```csharp
@@ -428,3 +423,4 @@ public Customer GetCustomer(Guid id)
 ---
 
 **Remember**: Security and performance are not features to be added later - they are architectural foundations that must be built in from the start.
+
