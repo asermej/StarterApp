@@ -205,3 +205,6 @@ RuleFor(x => x.EmployeeId)
 3. **Use conditional validation** - Only validate when relevant
 4. **Provide clear error messages** - Help users understand what went wrong
 5. **Keep validators focused** - One validator per resource model
+
+
+

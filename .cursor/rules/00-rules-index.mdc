@@ -30,7 +30,7 @@ Before proceeding with any request, validate:
 ### 2. 🔧 API Layer Rules (Backend Development)
 - **Location**: `apps/api/.cursor/`
 - **[Core Principles](docs/technical/reference/core/principles.md)** - Validation, exceptions, facades, domain patterns
-- **[Endpoint Workflow](.cursor/commands/new-endpoint.mdc)** - 8-phase interactive feature creation process (use `/new-endpoint` command)
+- **[Endpoint Workflow](.cursor/commands/new-endpoint.md)** - 8-phase interactive feature creation process (use `/new-endpoint` command)
 - **[Security & Performance](docs/technical/reference/core/security-performance.md)** - Security standards and performance requirements
 - **Templates**: `docs/technical/templates/domain-templates/`, `docs/technical/templates/api-templates/` - Code generation templates for backend components
 

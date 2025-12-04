@@ -164,3 +164,6 @@ var errorResponse = ErrorResponse.FromException(ex);
 // From validation result
 var errorResponse = ErrorResponse.FromValidationErrors(validationResult);
 ```
+
+
+

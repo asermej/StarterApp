@@ -83,3 +83,6 @@ public async Task<PaginatedResult<User>> Search(SearchUsersCriteria criteria)
     // ... execute query
 }
 ```
+
+
+
