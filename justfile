@@ -11,6 +11,15 @@ db-update:
 db-connect:
 	psql -h localhost -U postgres -d starter
 
+# Generate database schema context for AI/human reference
+# Uses env vars: PGHOST, PGUSER, PGPASSWORD, PGDATABASE (defaults to local dev)
+update-db-context:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	chmod +x scripts/generate-schema-context.sh
+	./scripts/generate-schema-context.sh > docs/technical/meta-data/database-schema-summary.md
+	echo "✅ Schema context updated: docs/technical/meta-data/database-schema-summary.md"
+
 # Start ONLY the API server (useful for running in separate terminal)
 dev-api:
 	cd apps/api/Platform.Api && dotnet run
