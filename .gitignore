@@ -19,6 +19,7 @@ appsettings.*.local.json
 !.cursor/rules/
 !.cursor/**/*.mdc
 !.cursor/**/*.hbs
+!.cursor/commands/
 *.user
 *.userosscache
 *.suo
