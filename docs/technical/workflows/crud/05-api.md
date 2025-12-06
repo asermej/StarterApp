@@ -1,4 +1,4 @@
-# Phase 4 – API Layer Workflow
+# Phase 5 – API Layer Workflow
 
 **Goal**: Expose the verified domain logic via a public HTTP endpoint, strictly using the provided templates.
 
@@ -70,7 +70,7 @@ When this workflow is active, follow these steps **in order**, waiting for user 
 
 After all API files are generated, say:
 
-> "**Phase 4 of 4 — API Layer: ✅ Complete.**"
+> "**Phase 5 of 5 — API Layer: ✅ Complete.**"
 
 Return control to the orchestrator to announce workflow completion.
 

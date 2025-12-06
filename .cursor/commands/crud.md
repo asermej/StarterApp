@@ -89,7 +89,7 @@ Then ask:
 > **Endpoints**: {selectedEndpoints}
 > **Auth**: {authentication}
 >
-> Ready to proceed?
+> Ready to proceed to database schema design?
 
 **Wait for confirmation.**
 
@@ -97,12 +97,13 @@ Then ask:
 
 ## Phases
 
-After confirmation, proceed through 4 phases in order:
+After confirmation, proceed through 5 phases in order:
 
-1. Database / Liquibase – [Phase 1](mdc:docs/technical/workflows/crud/01-database.md)
-2. Domain Layer – [Phase 2](mdc:docs/technical/workflows/crud/02-domain.md)
-3. Acceptance Tests – [Phase 3](mdc:docs/technical/workflows/crud/03-acceptance-tests.md)
-4. API Layer – [Phase 4](mdc:docs/technical/workflows/crud/04-api.md)
+1. Database Schema Design – [Phase 1](mdc:docs/technical/workflows/crud/01-database-changes.md)
+2. Liquibase Migration – [Phase 2](mdc:docs/technical/workflows/crud/02-liquibase-updates.md)
+3. Domain Layer – [Phase 3](mdc:docs/technical/workflows/crud/03-domain.md)
+4. Acceptance Tests – [Phase 4](mdc:docs/technical/workflows/crud/04-acceptance-tests.md)
+5. API Layer – [Phase 5](mdc:docs/technical/workflows/crud/05-api.md)
 
 ---
 
@@ -110,8 +111,8 @@ After confirmation, proceed through 4 phases in order:
 
 At each phase start, show:
 
-> **Phase X of 4 — {Phase Name}**
-> ✅ Phase 1 : ⏳ Phase 2 : ⬜ Phase 3 : ⬜ Phase 4
+> **Phase X of 5 — {Phase Name}**
+> ✅ Phase 1 : ⏳ Phase 2 : ⬜ Phase 3 : ⬜ Phase 4 : ⬜ Phase 5
 
 Use: ✅ completed | ⏳ current | ⬜ not started
 
@@ -122,6 +123,6 @@ Use: ✅ completed | ⏳ current | ⬜ not started
 1. Follow each phase workflow **verbatim**.
 2. Wait for user confirmation before moving to the next phase.
 3. After completing a phase:
-   > Phase X of 4 — {Name}: ✅ Complete.
+   > Phase X of 5 — {Name}: ✅ Complete.
    > Continue to Phase Y?
 

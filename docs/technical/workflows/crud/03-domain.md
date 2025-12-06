@@ -1,4 +1,4 @@
-# Phase 2 – Domain Layer Workflow
+# Phase 3 – Domain Layer Workflow
 
 **Goal**: Implement the core business logic, one class at a time, with strict verification against the source templates.
 
@@ -173,7 +173,7 @@ Always tell the user, for example:
 
 After all domain files are generated and verified, say:
 
-> "**Phase 2 of 4 — Domain Layer: ✅ Complete.**"
+> "**Phase 3 of 5 — Domain Layer: ✅ Complete.**"
 
-Return control to the orchestrator to ask if the user wants to continue to Phase 3.
+Return control to the orchestrator to ask if the user wants to continue to Phase 4.
 

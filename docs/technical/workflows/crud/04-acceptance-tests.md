@@ -1,4 +1,4 @@
-# Phase 3 – Acceptance Tests Workflow
+# Phase 4 – Acceptance Tests Workflow
 
 **Goal**: Create and verify acceptance tests for the new domain logic, ensuring it works correctly before building the API.
 
@@ -41,9 +41,9 @@ When this workflow is active, follow these steps **in order**, waiting for user 
 
 After running, summarize:
 
-> "**Phase 3 of 4 — Acceptance Tests: ✅ Complete** (all tests passing)."
+> "**Phase 4 of 5 — Acceptance Tests: ✅ Complete** (all tests passing)."
 
 (If tests fail, report and pause until the user addresses issues.)
 
-Return control to the orchestrator to ask if the user wants to continue to Phase 4.
+Return control to the orchestrator to ask if the user wants to continue to Phase 5.
 
